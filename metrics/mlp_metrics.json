@@ -1,0 +1,17 @@
+{
+  "model": "mlp_neural_network",
+  "mae": 0.18963331210647763,
+  "rmse": 0.26253059165591636,
+  "r2": 0.7912259043572718,
+  "architecture": {
+    "layers": [
+      64,
+      32,
+      16,
+      1
+    ],
+    "activation": "relu",
+    "optimizer": "adam",
+    "epochs_trained": 159
+  }
+}

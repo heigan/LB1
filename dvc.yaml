@@ -1,0 +1,84 @@
+stages:
+  prepare:
+    cmd: python src/prepare_data.py
+    deps:
+      - data/raw/housing.csv
+      - src/prepare_data.py
+      - params.yaml
+    outs:
+      - data/processed/prepared_data.csv
+      - models/preprocessor.pkl
+  
+  train_linear:
+      cmd: python src/train_linear.py
+      deps:
+        - data/processed/prepared_data.csv
+        - src/train_linear.py
+        - params.yaml
+      outs:
+        - models/linear_model.pkl
+      metrics:
+        - metrics/linear_metrics.json:
+            cache: false
+
+  train_decision_tree:
+    cmd: python src/train_decision_tree.py
+    deps:
+      - data/processed/prepared_data.csv
+      - src/train_decision_tree.py
+      - params.yaml
+    outs:
+      - models/decision_tree_model.pkl
+      - reports/decision_tree_nodes.png
+    metrics:
+      - metrics/decision_tree_metrics.json
+
+  train_catboost:
+    cmd: python src/train_catboost.py
+    deps:
+      - data/processed/prepared_data.csv
+      - src/train_catboost.py
+      - params.yaml
+    outs:
+      - models/catboost_model.cbm
+      - reports/catboost_feature_importance.png
+    metrics:
+      - metrics/catboost_metrics.json
+
+  train_xgboost:
+    cmd: python src/train_xgboost.py
+    deps:
+      - data/processed/prepared_data.csv
+      - src/train_xgboost.py
+      - params.yaml
+    outs:
+      - models/xgboost_model.pkl
+      - reports/xgboost_feature_importance.png
+    metrics:
+      - metrics/xgboost_metrics.json
+
+  train_mlp:
+      cmd: python src/train_mlp.py
+      deps:
+        - data/processed/prepared_data.csv
+        - src/train_mlp.py
+        - params.yaml
+      outs:
+        - models/mlp_model.keras
+        - reports/mlp_learning_curves.png
+        - reports/mlp_weight_histograms.png
+      metrics:
+        - metrics/mlp_metrics.json
+  
+  collect_metrics:
+    cmd: python src/collect_metrics.py
+    deps:
+      - src/collect_metrics.py
+      - metrics/linear_metrics.json
+      - metrics/decision_tree_metrics.json
+      - metrics/catboost_metrics.json
+      - metrics/xgboost_metrics.json
+      - metrics/mlp_metrics.json
+    outs:
+      - reports/summary_metrics.csv
+      - reports/summary_metrics.md

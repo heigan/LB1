@@ -1,0 +1,16 @@
+# Параметры предобработки
+preprocessing:
+  target_col: "median_house_value"
+  numeric_features: ["median_income", "longitude", "latitude", "housing_median_age"]
+  categorical_features: ["ocean_proximity"]
+  drop_features: ["total_rooms", "total_bedrooms", "households", "population"]
+  log_transform_target: true
+
+# Параметры линейной регрессии
+linear_regression:
+  fit_intercept: true
+  normalize: false  # StandardScaler делаем вручную
+
+# Общие параметры
+random_state: 42
+test_size: 0.2

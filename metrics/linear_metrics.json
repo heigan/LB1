@@ -1,0 +1,16 @@
+{
+  "model": "linear_regression",
+  "mae": 0.2636574182858163,
+  "rmse": 0.3446655629115108,
+  "r2": 0.6401574108185842,
+  "weights": {
+    "median_income": 0.31082465135085163,
+    "longitude": -0.3021084919560581,
+    "latitude": -0.30932674579531055,
+    "housing_median_age": 0.010221478432528063,
+    "ocean_proximity_INLAND": -0.3311958864398271,
+    "ocean_proximity_ISLAND": 0.5895303079513895,
+    "ocean_proximity_NEAR BAY": 0.00387895016711048,
+    "ocean_proximity_NEAR OCEAN": -0.013604292265575227
+  }
+}

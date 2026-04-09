@@ -1,0 +1,16 @@
+{
+  "model": "xgboost",
+  "mae": 0.16079808734163514,
+  "rmse": 0.23037984338050924,
+  "r2": 0.8392297326888887,
+  "feature_importance": {
+    "ocean_proximity_INLAND": 0.7309697866439819,
+    "median_income": 0.1040387824177742,
+    "ocean_proximity_NEAR BAY": 0.04436187446117401,
+    "ocean_proximity_NEAR OCEAN": 0.0382985956966877,
+    "longitude": 0.034592777490615845,
+    "latitude": 0.033312976360321045,
+    "housing_median_age": 0.014425216242671013,
+    "ocean_proximity_ISLAND": 0.0
+  }
+}

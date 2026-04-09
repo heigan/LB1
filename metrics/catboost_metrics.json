@@ -1,0 +1,16 @@
+{
+  "model": "catboost",
+  "mae": 0.17190181304561927,
+  "rmse": 0.2399576204021104,
+  "r2": 0.8255841818582949,
+  "feature_importance": {
+    "ocean_proximity_INLAND": 27.92672077188998,
+    "median_income": 24.623608237668122,
+    "longitude": 21.666210258883943,
+    "latitude": 19.53976459058828,
+    "housing_median_age": 3.950923941362556,
+    "ocean_proximity_NEAR OCEAN": 1.5097450980181808,
+    "ocean_proximity_NEAR BAY": 0.7829902074996039,
+    "ocean_proximity_ISLAND": 3.689408933183001e-05
+  }
+}

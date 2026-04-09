@@ -1,0 +1,22 @@
+strict digraph {
+"prepare";
+"train_linear";
+"train_decision_tree";
+"train_catboost";
+"train_xgboost";
+"train_mlp";
+"collect_metrics";
+"data\raw\housing.csv.dvc";
+"prepare" -> "train_linear";
+"prepare" -> "train_decision_tree";
+"prepare" -> "train_catboost";
+"prepare" -> "train_xgboost";
+"prepare" -> "train_mlp";
+"train_linear" -> "collect_metrics";
+"train_decision_tree" -> "collect_metrics";
+"train_catboost" -> "collect_metrics";
+"train_xgboost" -> "collect_metrics";
+"train_mlp" -> "collect_metrics";
+"data\raw\housing.csv.dvc" -> "prepare";
+}
+
