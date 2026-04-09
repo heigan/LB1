@@ -37,16 +37,16 @@ stages:
       size: 578
     - path: src/train_linear.py
       hash: md5
-      md5: c6f64774f51d55cf66f9c90b52d141ec
-      size: 2629
+      md5: 7655908471df2c2591de081e992ac0ee
+      size: 2159
     outs:
     - path: metrics/linear_metrics.json
       hash: md5
-      md5: 470f91a1e023ba82b73b65bb9054e6cf
-      size: 532
+      md5: d0b9078f4ff98304dd2c521cbe1076ac
+      size: 380
     - path: models/linear_model.pkl
       hash: md5
-      md5: dd87e3e3b621971c02cf925a4cd055fa
+      md5: f5fe897bd8e1d555bc225a04b9106064
       size: 1097
   train_decision_tree:
     cmd: python src/train_decision_tree.py
@@ -61,21 +61,21 @@ stages:
       size: 578
     - path: src/train_decision_tree.py
       hash: md5
-      md5: b62a413d7a0696e21256c6105866bf9c
-      size: 3249
+      md5: 60c954d4802f8a59191c1e89df4a89eb
+      size: 2684
     outs:
     - path: metrics/decision_tree_metrics.json
       hash: md5
-      md5: a8201981764515d1770b64513a7c53ea
-      size: 159
+      md5: ff264d01bfabb11a33c4ee0097183578
+      size: 415
     - path: models/decision_tree_model.pkl
       hash: md5
-      md5: c766517f5521648adae3239c4fd65b79
+      md5: 45ac6ae62df21b4dd8a2148926c0f706
       size: 3793
     - path: reports/decision_tree_nodes.png
       hash: md5
-      md5: e02f8c1a0498b0aa9ebc9425b92caaff
-      size: 353569
+      md5: f871413c55fb84fe22941f85829b5e6a
+      size: 348072
   train_catboost:
     cmd: python src/train_catboost.py
     deps:
@@ -89,21 +89,21 @@ stages:
       size: 578
     - path: src/train_catboost.py
       hash: md5
-      md5: 0b6e0c3c0299e671b248c1c7c2317d63
-      size: 3795
+      md5: 12e60d8228ef7d5a7d9d0d5ea190ea19
+      size: 2916
     outs:
     - path: metrics/catboost_metrics.json
       hash: md5
-      md5: 6550ba834d617815b868bac87b890a06
-      size: 524
+      md5: ca6a8e8be3d7e8ebe6753c9c620d1b51
+      size: 779
     - path: models/catboost_model.cbm
       hash: md5
-      md5: 9badde383c816a54c063c2935d190791
-      size: 563416
+      md5: 8047fd224796d9ff73aa82b879d20dd5
+      size: 562352
     - path: reports/catboost_feature_importance.png
       hash: md5
-      md5: d4a344d055433db43eff678e82a254a0
-      size: 49088
+      md5: df8725e1002c1ab44b377ea1cc6eb98a
+      size: 47697
   train_xgboost:
     cmd: python src/train_xgboost.py
     deps:
@@ -117,21 +117,21 @@ stages:
       size: 578
     - path: src/train_xgboost.py
       hash: md5
-      md5: be5f3748301f94e108f46e88d69d712d
-      size: 3398
+      md5: df140f9893085638f951cc70667da6ee
+      size: 2905
     outs:
     - path: metrics/xgboost_metrics.json
       hash: md5
-      md5: 81c976fb06ba91fe8f52567578c0e510
-      size: 516
+      md5: 44c9cdb4c8d82e925435c6e97d1f9d1d
+      size: 789
     - path: models/xgboost_model.pkl
       hash: md5
-      md5: 6cfb02cf342330a74d02c778545ef5bd
-      size: 2204410
+      md5: 8c57aba24b092ac8014d9821e2d3e0ec
+      size: 2166993
     - path: reports/xgboost_feature_importance.png
       hash: md5
-      md5: 6cc9e9d05ebe25dce21117ef3953564c
-      size: 48848
+      md5: 125e7a4c10380ccfb4740b2fe5ffee21
+      size: 48803
   train_mlp:
     cmd: python src/train_mlp.py
     deps:
@@ -145,22 +145,74 @@ stages:
       size: 578
     - path: src/train_mlp.py
       hash: md5
-      md5: 5c88082ee9821ede0f1be2534fd77f53
-      size: 5965
+      md5: ce27345a93e927a1130e8234499deee0
+      size: 6745
     outs:
     - path: metrics/mlp_metrics.json
       hash: md5
-      md5: e5f9183e3258ff160c09360319f9bcfc
-      size: 303
+      md5: 3a3dec08c651b4a745af252cf8a4e522
+      size: 553
     - path: models/mlp_model.keras
       hash: md5
-      md5: 7f6713bfbc3b03638080ef1520b8f1d4
+      md5: 396ada8b94e0f1c3534d69667660bd5c
       size: 68800
     - path: reports/mlp_learning_curves.png
       hash: md5
-      md5: 6fd8505934c39490ab4c99672337c755
-      size: 103504
+      md5: 0d1a1089fb3e37f67ac3aad311f8c0bb
+      size: 104626
     - path: reports/mlp_weight_histograms.png
       hash: md5
-      md5: b80ff0c8a1b20c3d76f43c043554cdfb
-      size: 95506
+      md5: 387c25621a0bfa16ba7699b4227475bb
+      size: 80176
+  collect_metrics:
+    cmd: python src/collect_metrics.py
+    deps:
+    - path: metrics/catboost_metrics.json
+      hash: md5
+      md5: ca6a8e8be3d7e8ebe6753c9c620d1b51
+      size: 779
+    - path: metrics/decision_tree_metrics.json
+      hash: md5
+      md5: ff264d01bfabb11a33c4ee0097183578
+      size: 415
+    - path: metrics/linear_metrics.json
+      hash: md5
+      md5: d0b9078f4ff98304dd2c521cbe1076ac
+      size: 380
+    - path: metrics/mlp_metrics.json
+      hash: md5
+      md5: 3a3dec08c651b4a745af252cf8a4e522
+      size: 553
+    - path: metrics/xgboost_metrics.json
+      hash: md5
+      md5: 44c9cdb4c8d82e925435c6e97d1f9d1d
+      size: 789
+    - path: src/collect_metrics.py
+      hash: md5
+      md5: ec8a7a5dbed85c55dd3377d78cdd8724
+      size: 2718
+    outs:
+    - path: reports/metrics_test.csv
+      hash: md5
+      md5: 1f22e392f284bac63366eedae5d747bd
+      size: 251
+    - path: reports/metrics_test.md
+      hash: md5
+      md5: fee8a0518da72de1dab3845330b4d0ec
+      size: 412
+    - path: reports/metrics_train.csv
+      hash: md5
+      md5: fc2d33523155748ea35b387cf21205a8
+      size: 253
+    - path: reports/metrics_train.md
+      hash: md5
+      md5: 05c8ec32e7af1390335f1659deb7b7f6
+      size: 412
+    - path: reports/metrics_val.csv
+      hash: md5
+      md5: 44eb0287a81e6ed86199899a18109a29
+      size: 253
+    - path: reports/metrics_val.md
+      hash: md5
+      md5: 2ddfce9331ed479ccd4b8d36698cc9cf
+      size: 412

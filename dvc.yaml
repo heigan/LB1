@@ -80,5 +80,9 @@ stages:
       - metrics/xgboost_metrics.json
       - metrics/mlp_metrics.json
     outs:
-      - reports/summary_metrics.csv
-      - reports/summary_metrics.md
+      - reports/metrics_train.csv
+      - reports/metrics_train.md
+      - reports/metrics_val.csv
+      - reports/metrics_val.md
+      - reports/metrics_test.csv
+      - reports/metrics_test.md

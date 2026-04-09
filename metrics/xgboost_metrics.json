@@ -1,16 +1,28 @@
 {
   "model": "xgboost",
-  "mae": 0.16079808734163514,
-  "rmse": 0.23037984338050924,
-  "r2": 0.8392297326888887,
+  "train": {
+    "mae": 0.11747907450360652,
+    "rmse": 0.16208293632766263,
+    "r2": 0.9194907832079235
+  },
+  "val": {
+    "mae": 0.16098576105127435,
+    "rmse": 0.23169375696311229,
+    "r2": 0.8305456621941407
+  },
+  "test": {
+    "mae": 0.16253294036927965,
+    "rmse": 0.23195419246021648,
+    "r2": 0.8370249099595981
+  },
   "feature_importance": {
-    "ocean_proximity_INLAND": 0.7309697866439819,
-    "median_income": 0.1040387824177742,
-    "ocean_proximity_NEAR BAY": 0.04436187446117401,
-    "ocean_proximity_NEAR OCEAN": 0.0382985956966877,
-    "longitude": 0.034592777490615845,
-    "latitude": 0.033312976360321045,
-    "housing_median_age": 0.014425216242671013,
-    "ocean_proximity_ISLAND": 0.0
+    "median_income": 0.10533913224935532,
+    "longitude": 0.03422292694449425,
+    "latitude": 0.033712878823280334,
+    "housing_median_age": 0.014996807090938091,
+    "ocean_proximity_INLAND": 0.723966658115387,
+    "ocean_proximity_ISLAND": 0.0032514010090380907,
+    "ocean_proximity_NEAR BAY": 0.04914792254567146,
+    "ocean_proximity_NEAR OCEAN": 0.0353623628616333
   }
 }

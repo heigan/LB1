@@ -1,4 +1,3 @@
-# src/train_linear.py
 import pandas as pd
 import numpy as np
 import yaml
@@ -13,63 +12,53 @@ def load_params(path='params.yaml'):
     with open(path, 'r', encoding='utf-8') as f:
         return yaml.safe_load(f)
 
+def calc_metrics(y_true, y_pred):
+    return {
+        "mae": float(mean_absolute_error(y_true, y_pred)),
+        "rmse": float(np.sqrt(mean_squared_error(y_true, y_pred))),
+        "r2": float(r2_score(y_true, y_pred))
+    }
+
 def main():
     params = load_params()
     random_state = params.get('random_state', 42)
-    test_size = params.get('test_size', 0.2)
 
-    # 1. Загрузка подготовленных данных
-    print("Загрузка данных: data/processed/prepared_data.csv")
     df = pd.read_csv('data/processed/prepared_data.csv')
-    
-    # Разделяем признаки и целевую переменную
-    target_col = 'target'
-    X = df.drop(columns=[target_col])
-    y = df[target_col]
+    X = df.drop(columns=['target'])
+    y = df['target']
 
-    # 2. Разделение на train/test
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=test_size, random_state=random_state
+    # Разделение 60/20/20
+    X_train_val, X_test, y_train_val, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=random_state
     )
-    print(f"Train: {X_train.shape} | Test: {X_test.shape}")
+    X_train, X_val, y_train, y_val = train_test_split(
+        X_train_val, y_train_val, test_size=0.25, random_state=random_state
+    )
 
-    # 3. Обучение линейной регрессии
     model = LinearRegression()
     model.fit(X_train, y_train)
-    print("Линейная регрессия обучена")
 
-    # 4. Прогнозы и метрики
-    y_pred = model.predict(X_test)
-    mae = mean_absolute_error(y_test, y_pred)
-    rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-    r2 = r2_score(y_test, y_pred)
-
-    print(f"\n Метрики на тесте:")
-    print(f"   MAE  : {mae:.4f}")
-    print(f"   RMSE : {rmse:.4f}")
-    print(f"   R²   : {r2:.4f}")
-
-    # 5. Веса модели
-    weights = dict(zip(X.columns, model.coef_))
-    print(f"\n Веса признаков: {weights}")
-
-    # 6. Сохранение результатов
-    os.makedirs('models', exist_ok=True)
-    os.makedirs('metrics', exist_ok=True)
-
-    joblib.dump(model, 'models/linear_model.pkl')
-    print("Модель сохранена: models/linear_model.pkl")
+    y_train_pred = model.predict(X_train)
+    y_val_pred = model.predict(X_val)
+    y_test_pred = model.predict(X_test)
 
     metrics = {
-        'model': 'linear_regression',
-        'mae': float(mae),
-        'rmse': float(rmse),
-        'r2': float(r2),
-        'weights': {k: float(v) for k, v in weights.items()}
+        "model": "linear_regression",
+        "train": calc_metrics(y_train, y_train_pred),
+        "val": calc_metrics(y_val, y_val_pred),
+        "test": calc_metrics(y_test, y_test_pred)
     }
+
+    print("Линейная регрессия обучена")
+    for split_name, m in [("Train", metrics["train"]), ("Val", metrics["val"]), ("Test", metrics["test"])]:
+        print(f"{split_name} -> MAE: {m['mae']:.4f} | RMSE: {m['rmse']:.4f} | R2: {m['r2']:.4f}")
+
+    os.makedirs('models', exist_ok=True)
+    os.makedirs('metrics', exist_ok=True)
+    joblib.dump(model, 'models/linear_model.pkl')
+
     with open('metrics/linear_metrics.json', 'w', encoding='utf-8') as f:
         json.dump(metrics, f, indent=2, ensure_ascii=False)
-    print("Метрики сохранены: metrics/linear_metrics.json")
 
 if __name__ == '__main__':
     main()
