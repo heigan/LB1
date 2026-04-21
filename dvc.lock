@@ -37,8 +37,8 @@ stages:
       size: 578
     - path: src/train_linear.py
       hash: md5
-      md5: 7655908471df2c2591de081e992ac0ee
-      size: 2159
+      md5: 71df31fe21b03f2f40deb20279bff116
+      size: 2944
     outs:
     - path: metrics/linear_metrics.json
       hash: md5
@@ -48,6 +48,10 @@ stages:
       hash: md5
       md5: f5fe897bd8e1d555bc225a04b9106064
       size: 1097
+    - path: reports/linear_feature_importance.png
+      hash: md5
+      md5: e605b595ba6cf279dfe3bbf8e87f4fe4
+      size: 52091
   train_decision_tree:
     cmd: python src/train_decision_tree.py
     deps:
@@ -61,8 +65,8 @@ stages:
       size: 578
     - path: src/train_decision_tree.py
       hash: md5
-      md5: 60c954d4802f8a59191c1e89df4a89eb
-      size: 2684
+      md5: 8b0211fe80b957fbc5d07c27f632bdab
+      size: 3517
     outs:
     - path: metrics/decision_tree_metrics.json
       hash: md5
@@ -72,6 +76,10 @@ stages:
       hash: md5
       md5: 45ac6ae62df21b4dd8a2148926c0f706
       size: 3793
+    - path: reports/decision_tree_feature_importance.png
+      hash: md5
+      md5: e3d8372f4e1110032c7450b43573ca1a
+      size: 48968
     - path: reports/decision_tree_nodes.png
       hash: md5
       md5: f871413c55fb84fe22941f85829b5e6a
@@ -145,25 +153,29 @@ stages:
       size: 578
     - path: src/train_mlp.py
       hash: md5
-      md5: ce27345a93e927a1130e8234499deee0
-      size: 6745
+      md5: edb878537351ac9004181a123a3c085c
+      size: 8891
     outs:
     - path: metrics/mlp_metrics.json
       hash: md5
-      md5: 3a3dec08c651b4a745af252cf8a4e522
+      md5: 2aeccd398bce866e1a0cc230c3ceb582
       size: 553
     - path: models/mlp_model.keras
       hash: md5
-      md5: 396ada8b94e0f1c3534d69667660bd5c
+      md5: 15b14455467a65e196ce1656fbe49c73
       size: 68800
+    - path: reports/mlp_feature_importance.png
+      hash: md5
+      md5: df2e8a1319148d6e22994768cd4e804d
+      size: 54699
     - path: reports/mlp_learning_curves.png
       hash: md5
-      md5: 0d1a1089fb3e37f67ac3aad311f8c0bb
-      size: 104626
+      md5: 3df50b95acb45ffa8a6795cb02de2cef
+      size: 102162
     - path: reports/mlp_weight_histograms.png
       hash: md5
-      md5: 387c25621a0bfa16ba7699b4227475bb
-      size: 80176
+      md5: 314be8496d78a62b8bba05d4ba0d7323
+      size: 83329
   collect_metrics:
     cmd: python src/collect_metrics.py
     deps:

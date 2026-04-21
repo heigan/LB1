@@ -63,6 +63,23 @@ def main():
     plt.savefig('reports/decision_tree_nodes.png', dpi=150, bbox_inches='tight')
     plt.close()
 
+    feature_importance = pd.DataFrame({
+        'feature': X.columns.tolist(),
+        'importance': model.feature_importances_
+    }).sort_values('importance', ascending=False)
+
+    # Визуализация
+    os.makedirs('reports', exist_ok=True)
+    plt.figure(figsize=(10, 6))
+    plt.barh(feature_importance['feature'][::-1], feature_importance['importance'][::-1])
+    plt.xlabel('Важность признака, %')
+    plt.ylabel('Признак')
+    plt.title('Дерево решений: Feature Importance')
+    plt.tight_layout()
+    plt.savefig('reports/decision_tree_feature_importance.png', dpi=150, bbox_inches='tight')
+    plt.close()
+    print("График сохранён: reports/decision_tree_feature_importance.png")
+
     os.makedirs('models', exist_ok=True)
     os.makedirs('metrics', exist_ok=True)
     joblib.dump(model, 'models/decision_tree_model.pkl')

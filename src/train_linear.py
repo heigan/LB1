@@ -4,6 +4,7 @@ import yaml
 import json
 import os
 import joblib
+import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
@@ -28,12 +29,8 @@ def main():
     y = df['target']
 
     # Разделение 60/20/20
-    X_train_val, X_test, y_train_val, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=random_state
-    )
-    X_train, X_val, y_train, y_val = train_test_split(
-        X_train_val, y_train_val, test_size=0.25, random_state=random_state
-    )
+    X_train_val, X_test, y_train_val, y_test = train_test_split(X, y, test_size=0.2, random_state=random_state)
+    X_train, X_val, y_train, y_val = train_test_split(X_train_val, y_train_val, test_size=0.25, random_state=random_state)
 
     model = LinearRegression()
     model.fit(X_train, y_train)
@@ -52,6 +49,23 @@ def main():
     print("Линейная регрессия обучена")
     for split_name, m in [("Train", metrics["train"]), ("Val", metrics["val"]), ("Test", metrics["test"])]:
         print(f"{split_name} -> MAE: {m['mae']:.4f} | RMSE: {m['rmse']:.4f} | R2: {m['r2']:.4f}")
+
+    # Feature Importance
+    feature_importance = pd.DataFrame({
+        'feature': X.columns.tolist(),
+        'importance': np.abs(model.coef_)
+    }).sort_values('importance', ascending=False)
+
+    os.makedirs('reports', exist_ok=True)
+    plt.figure(figsize=(10, 6))
+    plt.barh(feature_importance['feature'][::-1], feature_importance['importance'][::-1])
+    plt.xlabel('Абсолютное значение веса')
+    plt.ylabel('Признак')
+    plt.title('Линейная регрессия: Важность признаков (|coef|)')
+    plt.tight_layout()
+    plt.savefig('reports/linear_feature_importance.png', dpi=150, bbox_inches='tight')
+    plt.close()
+    print("График сохранён: reports/linear_feature_importance.png")
 
     os.makedirs('models', exist_ok=True)
     os.makedirs('metrics', exist_ok=True)

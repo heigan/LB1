@@ -12,6 +12,9 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.callbacks import TensorBoard, EarlyStopping
 import matplotlib.pyplot as plt
+from sklearn.inspection import permutation_importance
+from sklearn.metrics import mean_squared_error
+
 
 def load_params(path='params.yaml'):
     with open(path, 'r', encoding='utf-8') as f:
@@ -31,8 +34,13 @@ def main():
     tf.random.set_seed(random_state)
 
     df = pd.read_csv('data/processed/prepared_data.csv')
+
+    # Сохраняем имена признаков ДО конвертации в массив
+    feature_names = df.drop(columns=['target']).columns.tolist()
+
     X = df.drop(columns=['target']).values
     y = df['target'].values.reshape(-1, 1)
+    
 
     # Разделение 60% train / 20% val / 20% test
     X_train_val, X_test, y_train_val, y_test = train_test_split(
@@ -146,6 +154,45 @@ def main():
     plt.tight_layout()
     plt.savefig('reports/mlp_weight_histograms.png', dpi=150, bbox_inches='tight')
     plt.close()
+
+    # === Feature Importance для MLP (ручная реализация Permutation Importance) ===
+    from sklearn.metrics import mean_squared_error
+
+    print("Расчёт важности признаков для MLP...")
+    rng = np.random.RandomState(random_state)
+
+    # Базовая метрика на валидации
+    y_pred_base = model.predict(X_val, verbose=0).flatten()
+    baseline_score = -mean_squared_error(y_val_scaled, y_pred_base)
+
+    importances = []
+    n_repeats = 10
+    for i in range(X_val.shape[1]):
+        scores = []
+        for _ in range(n_repeats):
+            X_perm = X_val.copy()
+            rng.shuffle(X_perm[:, i])
+            y_perm_pred = model.predict(X_perm, verbose=0).flatten()
+            scores.append(-mean_squared_error(y_val_scaled, y_perm_pred))
+        # Важность = разница между базовым скором и скором после перемешивания
+        importances.append(baseline_score - np.mean(scores))
+
+    feature_importance = pd.DataFrame({
+        'feature': feature_names,  # <-- используем реальные имена
+        'importance': importances
+    }).sort_values('importance', ascending=False)
+
+    # Визуализация
+    os.makedirs('reports', exist_ok=True)
+    plt.figure(figsize=(10, 6))
+    plt.barh(feature_importance['feature'][::-1], feature_importance['importance'][::-1])
+    plt.xlabel('Падение качества (Negative MSE) при перестановке')
+    plt.ylabel('Признак')
+    plt.title('MLP: Permutation Importance (на валидации)')
+    plt.tight_layout()
+    plt.savefig('reports/mlp_feature_importance.png', dpi=150, bbox_inches='tight')
+    plt.close()
+    print("График сохранён: reports/mlp_feature_importance.png")
 
     # Сохранение артефактов
     os.makedirs('models', exist_ok=True)

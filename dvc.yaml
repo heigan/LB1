@@ -10,16 +10,16 @@ stages:
       - models/preprocessor.pkl
   
   train_linear:
-      cmd: python src/train_linear.py
-      deps:
-        - data/processed/prepared_data.csv
-        - src/train_linear.py
-        - params.yaml
-      outs:
-        - models/linear_model.pkl
-      metrics:
-        - metrics/linear_metrics.json:
-            cache: false
+    cmd: python src/train_linear.py
+    deps:
+      - data/processed/prepared_data.csv
+      - src/train_linear.py
+      - params.yaml
+    outs:
+      - models/linear_model.pkl
+      - reports/linear_feature_importance.png  
+    metrics:
+      - metrics/linear_metrics.json
 
   train_decision_tree:
     cmd: python src/train_decision_tree.py
@@ -30,6 +30,7 @@ stages:
     outs:
       - models/decision_tree_model.pkl
       - reports/decision_tree_nodes.png
+      - reports/decision_tree_feature_importance.png 
     metrics:
       - metrics/decision_tree_metrics.json
 
@@ -58,17 +59,18 @@ stages:
       - metrics/xgboost_metrics.json
 
   train_mlp:
-      cmd: python src/train_mlp.py
-      deps:
-        - data/processed/prepared_data.csv
-        - src/train_mlp.py
-        - params.yaml
-      outs:
-        - models/mlp_model.keras
-        - reports/mlp_learning_curves.png
-        - reports/mlp_weight_histograms.png
-      metrics:
-        - metrics/mlp_metrics.json
+    cmd: python src/train_mlp.py
+    deps:
+      - data/processed/prepared_data.csv
+      - src/train_mlp.py
+      - params.yaml
+    outs:
+      - models/mlp_model.keras
+      - reports/mlp_learning_curves.png
+      - reports/mlp_weight_histograms.png
+      - reports/mlp_feature_importance.png 
+    metrics:
+      - metrics/mlp_metrics.json
   
   collect_metrics:
     cmd: python src/collect_metrics.py
